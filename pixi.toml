@@ -1,0 +1,27 @@
+[project]
+name = "balancio-sim"
+version = "0.1.0"
+description = "A self-balancing robot for Isaac Sim"
+authors = ["blooop <blooop@gmail.com>"]
+channels = ["robostack-staging", "conda-forge"]
+platforms = ["linux-64", "win-64"]
+
+[dependencies]
+python = ">=3.10.0,<3.11"
+ros-humble-desktop = ">=0.10.0,<0.11"
+colcon-common-extensions = ">=0.3.0,<0.4"
+ros-humble-ament-cmake="*"
+setuptools = ">=61.0.0,<61.1"
+numpy = ">=1.26.4,<1.27"
+ruff = ">=0.5.5,<0.6"
+types-setuptools = ">=71.1.0.20240726,<72"
+ros-humble-gazebo-dev ="*"
+
+[tasks]
+build = "pixi run colcon build"
+lint = "pixi run ruff check . && pixi run ruff format --check . && pixi run mypy --explicit-package-bases ."
+format = "pixi run ruff check --fix . && pixi run ruff format ."
+
+[activation]
+scripts = ["install/setup.sh"]
+
