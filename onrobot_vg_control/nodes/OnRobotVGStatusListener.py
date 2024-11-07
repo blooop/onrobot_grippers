@@ -2,7 +2,7 @@
 
 import rclpy
 from rclpy.node import Node
-from onrobot_vg_control.msg import OnRobotVGInput
+from onrobot_vg_msgs.msg import OnRobotVGInput
 
 
 class OnRobotVGStatusListener(Node):

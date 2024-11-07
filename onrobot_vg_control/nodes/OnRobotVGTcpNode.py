@@ -2,10 +2,11 @@
 
 import rclpy
 from rclpy.node import Node
-from onrobot_vg_modbus_tcp.comModbusTcp import communication
-from onrobot_vg_control.baseOnRobotVG import onrobotbaseVG
-from onrobot_vg_control.msg import OnRobotVGInput
-from onrobot_vg_control.msg import OnRobotVGOutput
+
+from onrobot_vg_modbus_tcp import Communication
+from onrobot_vg_control.baseOnRobotVG import OnRobotBaseVG
+from onrobot_vg_msgs.msg import OnRobotVGInput
+from onrobot_vg_msgs.msg import OnRobotVGOutput
 
 
 class OnRobotVGTcp(Node):
@@ -19,23 +20,23 @@ class OnRobotVGTcp(Node):
         dummy = self.declare_parameter('onrobot.dummy', False).value
 
         # Gripper is a VG gripper with a Modbus/TCP connection
-        self.gripper = onrobotbaseVG()
-        self.gripper.client = communication(dummy)
+        self.gripper = OnRobotBaseVG()
+        self.gripper.client = Communication(dummy)
 
         # Connects to the IP address received as an argument
-        self.gripper.client.connectToDevice(ip, port, changer_addr)
+        self.gripper.client.connect_to_device(ip, port, changer_addr)
 
         # The Gripper status is published on the topic named 'OnRobotVGInput'
         self.pub = self.create_publisher(OnRobotVGInput, 'OnRobotVGInput', 10)
 
         # The Gripper command is received from the topic named 'OnRobotVGOutput'
-        self.create_subscription(OnRobotVGOutput, 'OnRobotVGOutput', self.gripper.refreshCommand, 10)
+        self.create_subscription(OnRobotVGOutput, 'OnRobotVGOutput', self.gripper.refresh_command, 10)
 
         self.prev_msg = []
         self.timer = self.create_timer(0.1, self.main_loop)
     def main_loop(self):
         # Get and publish the Gripper status
-        status = self.gripper.getStatus()
+        status = self.gripper.get_status()
         self.pub.publish(status)
 
             # Send the most recent command

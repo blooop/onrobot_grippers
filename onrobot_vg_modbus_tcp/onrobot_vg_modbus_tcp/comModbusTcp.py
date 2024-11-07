@@ -73,7 +73,7 @@ class Communication(Node):
         # Get status from the device (address 258 ~ 259)
         with self.lock:
             response = self.client.read_holding_registers(
-                address=258, count=2, unit=self.changer_addr).registers
+                address=258, count=2, unit=int(self.changer_addr)).registers
 
         # Output the result
         return response
