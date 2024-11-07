@@ -1,5 +1,5 @@
-# rMCA : The Control mode
-# rVCA : The Target vacuume field
+# r_mca : The Control mode
+# r_vca : The Target vacuume field
 #
 #        The register allows for control of channel A.
 #        The register is split into two 8-bit fields:
@@ -37,10 +37,10 @@
 #        Setting the register value 512 (0x0200)
 #            will command the VG to idle the channel.
 
-uint16 rMCA
-uint16 rVCA
+uint16 r_mca
+uint16 r_vca
 
-# rVCB : Same as the one of channel A.
+# r_vcb : Same as the one of channel A.
 
-uint16 rMCB
-uint16 rVCB
+uint16 r_mcb
+uint16 r_vcb
