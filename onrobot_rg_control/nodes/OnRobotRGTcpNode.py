@@ -47,7 +47,7 @@ class OnRobotRGTcpNode(OnRobotBaseRG):
         self.sub = self.create_subscription(
             OnRobotRGOutput,
             'OnRobotRGOutput',
-            self.refreshCommand,
+            self.refresh_command,
             10)
 
 

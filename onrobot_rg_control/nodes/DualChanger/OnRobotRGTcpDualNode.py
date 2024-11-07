@@ -28,8 +28,8 @@ class OnRobotDualRGTcp:
         self.pub_secondary_gripper = rospy.Publisher('OnRobotRGInput_B', OnRobotRGInput, queue_size=1)
 
         #Gripper Commandds reception
-        rospy.Subscriber('OnRobotRGOutput_A', OnRobotRGOutput, self.gripper_primary.refreshCommand)
-        rospy.Subscriber('OnRobotRGOutput_B', OnRobotRGOutput, self.gripper_secondary.refreshCommand)
+        rospy.Subscriber('OnRobotRGOutput_A', OnRobotRGOutput, self.gripper_primary.refresh_command)
+        rospy.Subscriber('OnRobotRGOutput_B', OnRobotRGOutput, self.gripper_secondary.refresh_command)
 
         # The restarting service
         rospy.Service(

@@ -51,7 +51,7 @@ class OnRobotBaseRG(Node):
         # Return the modified command
         return command
 
-    def refreshCommand(self, command):
+    def refresh_command(self, command):
         """Updates the command which will be sent
             during the next sendCommand() call.
         """
