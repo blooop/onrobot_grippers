@@ -3,6 +3,9 @@
 *.egg-info
 dist
 build
+log
+install
 eggs
 __pycache__
 CATKIN_IGNORE
+.pixi
