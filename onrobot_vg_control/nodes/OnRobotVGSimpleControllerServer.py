@@ -2,8 +2,8 @@
 
 import rclpy
 from rclpy.node import Node
-from onrobot_vg_control.msg import OnRobotVGOutput
-from onrobot_vg_control.srv import SetCommand
+from onrobot_vg_msgs.msg import OnRobotVGOutput
+from onrobot_vg_msgs.srv import SetCommand
 
 class OnRobotVGNode(Node):
     """Class to handle setting commands."""
@@ -21,9 +21,9 @@ class OnRobotVGNode(Node):
         self.get_logger().info(str(request.command))
         self.command = self.genCommand(str(request.command), self.command)
         self.pub.publish(self.command)
-        self.create_timer(1.0, lambda: None).cancel()  # Equivalent to rospy.sleep(1)
-        response.success = None  # TODO: implement
-        response.message = None  # TODO: implement
+        # self.create_timer(1.0, lambda: None).cancel()  # Equivalent to rospy.sleep(1)
+        # response.success = None  # TODO: implement
+        # response.message = None  # TODO: implement
         return response
 
     def genCommand(self, char, command):
