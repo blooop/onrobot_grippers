@@ -20,8 +20,8 @@ class OnRobotVGStatusListener(Node):
         self.get_logger().info(self.status_interpreter(msg))
 
     def status_interpreter(self, status):
-    """Generates a string according to the current value of the status variables."""
-    output = '\n-----\nOnRobot VG status interpreter\n-----\n'
+        """Generates a string according to the current value of the status variables."""
+        output = '\n-----\nOnRobot VG status interpreter\n-----\n'
 
         # g_vca
         output += f'g_vca = {status.g_vca}: '
@@ -31,7 +31,7 @@ class OnRobotVGStatusListener(Node):
         output += f'g_vcb = {status.g_vcb}: '
         output += f'Current vacuum value on Channel B: {status.g_vcb}\n'
 
-    return output
+        return output
 
 
 def main(args=None):
