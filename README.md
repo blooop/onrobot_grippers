@@ -1,3 +1,15 @@
+# ROS2 Port
+
+All the packages except the top level metapackage have been ported to ROS2 humble.
+
+The rg packages were ported here: https://github.com/BrettRD/onrobot_grippers
+
+This fork ports the vg packages as well.
+
+
+# Original Readme
+
+
 # onrobot
 
 [![support level: community](https://img.shields.io/badge/support%20level-community-lightgray.svg)](https://rosindustrial.org/news/2016/10/7/better-supporting-a-growing-ros-industrial-software-platform)
