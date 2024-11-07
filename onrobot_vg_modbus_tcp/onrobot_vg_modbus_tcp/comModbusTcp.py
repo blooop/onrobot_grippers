@@ -58,7 +58,7 @@ class Communication(Node):
                        message[2] + message[3]]
             with self.lock:
                 self.client.write_registers(
-                    address=0, values=command, unit=self.changer_addr)
+                    address=0, values=command,unit=int(self.changer_addr))
 
     def get_status(self):
         """Sends a request to read, wait for the response
