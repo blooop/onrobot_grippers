@@ -7,11 +7,11 @@ from onrobot_vg_msgs.msg import OnRobotVGInput
 
 class OnRobotBaseVG(Node):
     """Base class (communication protocol agnostic) for sending commands
-       and receiving the status of the OnRobot VG gripper.
+    and receiving the status of the OnRobot VG gripper.
     """
 
     def __init__(self):
-        super().__init__('onrobot_base_vg')
+        super().__init__("onrobot_base_vg")
         # Initiate output message as an empty list
         self.message = []
 
@@ -46,20 +46,13 @@ class OnRobotBaseVG(Node):
 
     def refresh_command(self, command):
         """Updates the command which will be sent
-           during the next send_command() call.
+        during the next send_command() call.
         """
 
         # Limit the value of each variable
         command = self.verify_command(command)
 
-        # Initiate command as an empty list
-        self.message = []
-
-        # Build the command with each output variable
-        self.message.append(command.r_mca)
-        self.message.append(command.r_vca)
-        self.message.append(command.r_mcb)
-        self.message.append(command.r_vcb)
+        self.message = [command.r_mca, command.r_vca, command.r_mcb, command.r_vcb]
 
     def send_command(self):
         """Sends the command to the Gripper."""
@@ -68,7 +61,7 @@ class OnRobotBaseVG(Node):
 
     def get_status(self):
         """Requests the status from the gripper and
-           return it in the OnRobotVGInput msg type.
+        return it in the OnRobotVGInput msg type.
         """
 
         # Acquire status from the Gripper
@@ -87,7 +80,7 @@ class OnRobotBaseVG(Node):
 def main(args=None):
     rclpy.init(args=args)
     onrobot_base_vg = OnRobotBaseVG()
-    
+
     try:
         rclpy.spin(onrobot_base_vg)
     except KeyboardInterrupt:
@@ -97,5 +90,5 @@ def main(args=None):
         rclpy.shutdown()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
