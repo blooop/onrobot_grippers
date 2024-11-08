@@ -1,47 +1,48 @@
 #!/usr/bin/env python3
 
-import rospy
-from onrobot_vg_control.msg import OnRobotVGOutput
+import rclpy
+from rclpy.node import Node
+from onrobot_vg_msgs.msg import OnRobotVGOutput
 
 
 def genCommand(char, command):
     """Updates the command according to the character entered by the user."""
 
     if char == 'g':
-        command.rMCA = 0x0100
-        command.rVCA = 255
-        command.rMCB = 0x0100
-        command.rVCB = 255
+        command.r_mca = 0x0100
+        command.r_vca = 255
+        command.r_mcb = 0x0100
+        command.r_vcb = 255
     if char == 'r':
-        command.rMCA = 0x0000
-        command.rVCA = 0
-        command.rMCB = 0x0000
-        command.rVCB = 0
+        command.r_mca = 0x0000
+        command.r_vca = 0
+        command.r_mcb = 0x0000
+        command.r_vcb = 0
     if char == 'ga':
-        command.rMCA = 0x0100
-        command.rVCA = 255
+        command.r_mca = 0x0100
+        command.r_vca = 255
     if char == 'ra':
-        command.rMCA = 0x0000
-        command.rVCA = 0
+        command.r_mca = 0x0000
+        command.r_vca = 0
     if char == 'gb':
-        command.rMCB = 0x0100
-        command.rVCB = 255
+        command.r_mcb = 0x0100
+        command.r_vcb = 255
     if char == 'rb':
-        command.rMCB = 0x0000
-        command.rVCB = 0
+        command.r_mcb = 0x0000
+        command.r_vcb = 0
 
     # If the command entered is a int, assign this value to r
     try:
         if int(char) == 0:
-            command.rMCA = 0x0000
-            command.rVCA = 0
-            command.rMCB = 0x0000
-            command.rVCB = 0
+            command.r_mca = 0x0000
+            command.r_vca = 0
+            command.r_mcb = 0x0000
+            command.r_vcb = 0
         else:
-            command.rMCA = 0x0100
-            command.rVCA = min(255, int(char))
-            command.rMCB = 0x0100
-            command.rVCB = min(255, int(char))
+            command.r_mca = 0x0100
+            command.r_vca = min(255, int(char))
+            command.r_mcb = 0x0100
+            command.r_vcb = min(255, int(char))
     except ValueError:
         pass
 
@@ -52,12 +53,12 @@ def askForCommand(command):
     """Asks the user for a command to send to the gripper."""
 
     currentCommand = 'Simple OnRobot VG Controller\n-----\nCurrent command:'
-    currentCommand += ' rMCA = ' + str(command.rMCA)
-    currentCommand += ', rVCA = ' + str(command.rVCA)
-    currentCommand += ', rMCB = ' + str(command.rMCB)
-    currentCommand += ', rVCB = ' + str(command.rVCB)
+    currentCommand += f' r_mca = {command.r_mca}'
+    currentCommand += f', r_vca = {command.r_vca}'
+    currentCommand += f', r_mcb = {command.r_mcb}'
+    currentCommand += f', r_vcb = {command.r_vcb}'
 
-    rospy.loginfo(currentCommand)
+    print(currentCommand)
 
     strAskForCommand = '-----\nAvailable commands\n\n'
     strAskForCommand += 'g: Turn on all channels\n'
@@ -73,21 +74,30 @@ def askForCommand(command):
     return input(strAskForCommand)
 
 
-def publisher():
-    """Main loop which requests new commands and
-       publish them on the OnRobotVGOutput topic.
-    """
+class OnRobotVGSimpleController(Node):
+    def __init__(self):
+        super().__init__('OnRobotVGSimpleController')
+        self.publisher_ = self.create_publisher(OnRobotVGOutput, 'OnRobotVGOutput', 10)
+        self.timer = self.create_timer(0.1, self.timer_callback)
+        self.command = OnRobotVGOutput()
 
-    rospy.init_node(
-        'OnRobotVGSimpleController', anonymous=True, log_level=rospy.DEBUG)
-    pub = rospy.Publisher('OnRobotVGOutput', OnRobotVGOutput, queue_size=1)
-    command = OnRobotVGOutput()
-
-    while not rospy.is_shutdown():
-        command = genCommand(askForCommand(command), command)
-        pub.publish(command)
-        rospy.sleep(0.1)
+    def timer_callback(self):
+        self.command = genCommand(askForCommand(self.command), self.command)
+        self.publisher_.publish(self.command)
 
 
+def main(args=None):
+    rclpy.init(args=args)
+
+    controller = OnRobotVGSimpleController()
+
+    try:
+        rclpy.spin(controller)
+    except KeyboardInterrupt:
+        pass
+
+    controller.destroy_node()
+    rclpy.shutdown()
+    
 if __name__ == '__main__':
-    publisher()
+    main()

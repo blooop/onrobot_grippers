@@ -1,40 +1,28 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.5)
 project(onrobot_vg_control)
-find_package(catkin REQUIRED COMPONENTS
-  rospy
-  onrobot_vg_modbus_tcp
-  message_generation
-)
 
-add_message_files(
-  FILES
-  OnRobotVGInput.msg
-  OnRobotVGOutput.msg
-) 
+find_package(ament_cmake REQUIRED)
+find_package(ament_cmake_python REQUIRED)
+find_package(rclpy REQUIRED)
+find_package(std_srvs)
+find_package(rosidl_default_generators REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(onrobot_vg_modbus_tcp)
 
-add_service_files(
-  FILES
-  SetCommand.srv
-)
+ament_python_install_package(${PROJECT_NAME})
 
-catkin_python_setup()
-
-generate_messages(
-  DEPENDENCIES
-)
-
-catkin_package(
-  LIBRARIES ${PROJECT_NAME}
-  DEPENDS
-  CATKIN_DEPENDS
-  rospy
-  onrobot_vg_modbus_tcp
-)
-
-catkin_install_python(
-  PROGRAMS
+install(PROGRAMS
   nodes/OnRobotVGSimpleController.py
   nodes/OnRobotVGStatusListener.py
   nodes/OnRobotVGTcpNode.py
   nodes/OnRobotVGSimpleControllerServer.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+install(
+  DIRECTORY launch
+  DESTINATION share/${PROJECT_NAME}
+)
+
+ament_package()
+
