@@ -19,7 +19,7 @@ ros2 run onrobot_vg_control OnRobotVGSimpleController.py
 
 ##### ROS service call
 ```bash
-ros2 launch onrobot_vg_control bringup_server.launch
+ros2 launch onrobot_vg_control bringup_server.launch.py
 ros2 service call /onrobot_vg/set_command onrobot_vg_msgs/srv/SetCommand "{ command: 'g' }"
 ros2 service call /onrobot_vg/set_command onrobot_vg_msgs/srv/SetCommand "{ command: 'r' }"
 ```
